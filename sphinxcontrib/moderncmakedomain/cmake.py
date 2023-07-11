@@ -62,52 +62,52 @@ from pygments.token import (Comment, Name, Number, Operator, Punctuation,
 #   be present.
 
 CMakeLexer.tokens["root"] = [
-  # fctn(
-  (r'\b(\w+)([ \t]*)(\()',
-   bygroups(Name.Function, Text, Name.Function), '#push'),
-  (r'\(', Name.Function, '#push'),
-  (r'\)', Name.Function, '#pop'),
-  (r'\[', Punctuation, '#push'),
-  (r'\]', Punctuation, '#pop'),
-  (r'[|;,.=*\-]', Punctuation),
-  # used in commands/source_group
-  (r'\\\\', Punctuation),
-  (r'[:]', Operator),
-  # used in FindPkgConfig.cmake
-  (r'[<>]=', Punctuation),
-  # $<...>
-  (r'\$<', Operator, '#push'),
-  # <expr>
-  (r'<[^<|]+?>(\w*\.\.\.)?', Name.Variable),
-  # ${..} $ENV{..}, possibly nested
-  (r'(\$\w*\{)([^\}\$]*)?(?:(\$\w*\{)([^\}]+?)(\}))?([^\}]*?)(\})',
-   bygroups(Operator, Name.Tag, Operator, Name.Tag, Operator, Name.Tag,
-            Operator)),
-  # DATA{ ...}
-  (r'([A-Z]+\{)(.+?)(\})', bygroups(Operator, Name.Tag, Operator)),
-  # URL, git@, ...
-  (r'[a-z]+(@|(://))((\\.)|[\w.+-:/\\])+', Name.Attribute),
-  # absolute path
-  (r'/\w[\w\.\+-/\\]*', Name.Attribute),
-  (r'/', Name.Attribute),
-  # relative path
-  (r'\w[\w\.\+-]*/[\w.+-/\\]*', Name.Attribute),
-  # initial A-Z, contains a-z
-  (r'[A-Z]((\\.)|[\w.+-])*[a-z]((\\.)|[\w.+-])*', Name.Builtin),
-  (r'@?[A-Z][A-Z0-9_]*', Name.Constant),
-  (r'[a-z_]((\\;)|(\\ )|[\w.+-])*', Name.Builtin),
-  (r'[0-9][0-9\.]*', Number),
-  # "string"
-  (r'(?s)"(\\"|[^"])*"', String),
-  (r'\.\.\.', Name.Variable),
-  # <..|..> is different from <expr>
-  (r'<', Operator, '#push'),
-  (r'>', Operator, '#pop'),
-  (r'\n', Whitespace),
-  (r'[ \t]+', Whitespace),
-  (r'#.*\n', Comment),
-  # fallback, for debugging only
-  #  (r'[^<>\])\}\|$"# \t\n]+', Name.Exception),
+    # fctn(
+    (r'\b(\w+)([ \t]*)(\()',
+     bygroups(Name.Function, Text, Name.Function), '#push'),
+    (r'\(', Name.Function, '#push'),
+    (r'\)', Name.Function, '#pop'),
+    (r'\[', Punctuation, '#push'),
+    (r'\]', Punctuation, '#pop'),
+    (r'[|;,.=*\-]', Punctuation),
+    # used in commands/source_group
+    (r'\\\\', Punctuation),
+    (r'[:]', Operator),
+    # used in FindPkgConfig.cmake
+    (r'[<>]=', Punctuation),
+    # $<...>
+    (r'\$<', Operator, '#push'),
+    # <expr>
+    (r'<[^<|]+?>(\w*\.\.\.)?', Name.Variable),
+    # ${..} $ENV{..}, possibly nested
+    (r'(\$\w*\{)([^\}\$]*)?(?:(\$\w*\{)([^\}]+?)(\}))?([^\}]*?)(\})',
+     bygroups(Operator, Name.Tag, Operator, Name.Tag, Operator, Name.Tag,
+              Operator)),
+    # DATA{ ...}
+    (r'([A-Z]+\{)(.+?)(\})', bygroups(Operator, Name.Tag, Operator)),
+    # URL, git@, ...
+    (r'[a-z]+(@|(://))((\\.)|[\w.+-:/\\])+', Name.Attribute),
+    # absolute path
+    (r'/\w[\w\.\+-/\\]*', Name.Attribute),
+    (r'/', Name.Attribute),
+    # relative path
+    (r'\w[\w\.\+-]*/[\w.+-/\\]*', Name.Attribute),
+    # initial A-Z, contains a-z
+    (r'[A-Z]((\\.)|[\w.+-])*[a-z]((\\.)|[\w.+-])*', Name.Builtin),
+    (r'@?[A-Z][A-Z0-9_]*', Name.Constant),
+    (r'[a-z_]((\\;)|(\\ )|[\w.+-])*', Name.Builtin),
+    (r'[0-9][0-9\.]*', Number),
+    # "string"
+    (r'(?s)"(\\"|[^"])*"', String),
+    (r'\.\.\.', Name.Variable),
+    # <..|..> is different from <expr>
+    (r'<', Operator, '#push'),
+    (r'>', Operator, '#pop'),
+    (r'\n', Whitespace),
+    (r'[ \t]+', Whitespace),
+    (r'#.*\n', Comment),
+    # fallback, for debugging only
+    #  (r'[^<>\])\}\|$"# \t\n]+', Name.Exception),
 ]
 
 # END pygments tweaks
@@ -207,28 +207,27 @@ class _cmake_index_entry:
 
 
 _cmake_index_objs = {
-    'command':    _cmake_index_entry('command'),
-    'cpack_gen':  _cmake_index_entry('cpack generator'),
-    'envvar':     _cmake_index_entry('envvar'),
-    'generator':  _cmake_index_entry('generator'),
-    'genex':      _cmake_index_entry('genex'),
-    'guide':      _cmake_index_entry('guide'),
-    'manual':     _cmake_index_entry('manual'),
-    'module':     _cmake_index_entry('module'),
-    'policy':     _cmake_index_entry('policy'),
+    'command': _cmake_index_entry('command'),
+    'cpack_gen': _cmake_index_entry('cpack generator'),
+    'envvar': _cmake_index_entry('envvar'),
+    'generator': _cmake_index_entry('generator'),
+    'genex': _cmake_index_entry('genex'),
+    'guide': _cmake_index_entry('guide'),
+    'manual': _cmake_index_entry('manual'),
+    'module': _cmake_index_entry('module'),
+    'policy': _cmake_index_entry('policy'),
     'prop_cache': _cmake_index_entry('cache property'),
-    'prop_dir':   _cmake_index_entry('directory property'),
-    'prop_gbl':   _cmake_index_entry('global property'),
-    'prop_inst':  _cmake_index_entry('installed file property'),
-    'prop_sf':    _cmake_index_entry('source file property'),
-    'prop_test':  _cmake_index_entry('test property'),
-    'prop_tgt':   _cmake_index_entry('target property'),
-    'variable':   _cmake_index_entry('variable'),
-    }
+    'prop_dir': _cmake_index_entry('directory property'),
+    'prop_gbl': _cmake_index_entry('global property'),
+    'prop_inst': _cmake_index_entry('installed file property'),
+    'prop_sf': _cmake_index_entry('source file property'),
+    'prop_test': _cmake_index_entry('test property'),
+    'prop_tgt': _cmake_index_entry('target property'),
+    'variable': _cmake_index_entry('variable'),
+}
 
 
 class CMakeTransform(Transform):
-
     # Run this transform early since we insert nodes we want
     # treated as if they were written in the documents.
     default_priority = 210
@@ -247,7 +246,7 @@ class CMakeTransform(Transform):
         env = settings.env
         title = self.titles.get(docname)
         if title is None:
-            fname = os.path.join(env.srcdir, docname+'.rst')
+            fname = os.path.join(env.srcdir, docname + '.rst')
             try:
                 f = open(fname, 'r', encoding=settings.input_encoding)
             except IOError:
@@ -518,6 +517,7 @@ class CMakeReferenceRole:
                          ) -> Tuple[List[Node], List[system_message]]:
                 text = CMakeReferenceRole._escape_angle_brackets(text)
                 return super().__call__(name, rawtext, text, *args, **kwargs)
+
         return Class
 
 
@@ -538,7 +538,6 @@ class CMakeCRefRole(CMakeReferenceRole[ReferenceRole]):
 
 
 class CMakeXRefRole(CMakeReferenceRole[XRefRole]):
-
     _re_sub = re.compile(r'^([^()\s]+)\s*\(([^()]*)\)$', re.DOTALL)
     _re_genex = re.compile(r'^\$<([^<>:]+)(:[^<>]+)?>$', re.DOTALL)
     _re_guide = re.compile(r'^([^<>/]+)/([^<>]*)$', re.DOTALL)
@@ -576,7 +575,6 @@ class CMakeXRefRole(CMakeReferenceRole[XRefRole]):
 
 
 class CMakeXRefTransform(Transform):
-
     # Run this transform early since we insert nodes we want
     # treated as if they were written in the documents, but
     # after the sphinx (210) and docutils (220) substitutions.
@@ -632,51 +630,51 @@ class CMakeDomain(Domain):
     name = 'cmake'
     label = 'CMake'
     object_types = {
-        'command':    ObjType('command',    'command'),
-        'cpack_gen':  ObjType('cpack_gen',  'cpack_gen'),
-        'envvar':     ObjType('envvar',     'envvar'),
-        'generator':  ObjType('generator',  'generator'),
-        'genex':      ObjType('genex',      'genex'),
-        'guide':      ObjType('guide',      'guide'),
-        'variable':   ObjType('variable',   'variable'),
-        'module':     ObjType('module',     'module'),
-        'policy':     ObjType('policy',     'policy'),
+        'command': ObjType('command', 'command'),
+        'cpack_gen': ObjType('cpack_gen', 'cpack_gen'),
+        'envvar': ObjType('envvar', 'envvar'),
+        'generator': ObjType('generator', 'generator'),
+        'genex': ObjType('genex', 'genex'),
+        'guide': ObjType('guide', 'guide'),
+        'variable': ObjType('variable', 'variable'),
+        'module': ObjType('module', 'module'),
+        'policy': ObjType('policy', 'policy'),
         'prop_cache': ObjType('prop_cache', 'prop_cache'),
-        'prop_dir':   ObjType('prop_dir',   'prop_dir'),
-        'prop_gbl':   ObjType('prop_gbl',   'prop_gbl'),
-        'prop_inst':  ObjType('prop_inst',  'prop_inst'),
-        'prop_sf':    ObjType('prop_sf',    'prop_sf'),
-        'prop_test':  ObjType('prop_test',  'prop_test'),
-        'prop_tgt':   ObjType('prop_tgt',   'prop_tgt'),
-        'manual':     ObjType('manual',     'manual'),
+        'prop_dir': ObjType('prop_dir', 'prop_dir'),
+        'prop_gbl': ObjType('prop_gbl', 'prop_gbl'),
+        'prop_inst': ObjType('prop_inst', 'prop_inst'),
+        'prop_sf': ObjType('prop_sf', 'prop_sf'),
+        'prop_test': ObjType('prop_test', 'prop_test'),
+        'prop_tgt': ObjType('prop_tgt', 'prop_tgt'),
+        'manual': ObjType('manual', 'manual'),
     }
     directives = {
-        'command':    CMakeObject,
-        'envvar':     CMakeObject,
-        'genex':      CMakeGenexObject,
-        'signature':  CMakeSignatureObject,
-        'variable':   CMakeObject,
+        'command': CMakeObject,
+        'envvar': CMakeObject,
+        'genex': CMakeGenexObject,
+        'signature': CMakeSignatureObject,
+        'variable': CMakeObject,
         # Other `object_types` cannot be created except by the `CMakeTransform`
     }
     roles = {
-        'cref':       CMakeCRefRole(),
-        'command':    CMakeXRefRole(fix_parens=True, lowercase=True),
-        'cpack_gen':  CMakeXRefRole(),
-        'envvar':     CMakeXRefRole(),
-        'generator':  CMakeXRefRole(),
-        'genex':      CMakeXRefRole(),
-        'guide':      CMakeXRefRole(),
-        'variable':   CMakeXRefRole(),
-        'module':     CMakeXRefRole(),
-        'policy':     CMakeXRefRole(),
+        'cref': CMakeCRefRole(),
+        'command': CMakeXRefRole(fix_parens=True, lowercase=True),
+        'cpack_gen': CMakeXRefRole(),
+        'envvar': CMakeXRefRole(),
+        'generator': CMakeXRefRole(),
+        'genex': CMakeXRefRole(),
+        'guide': CMakeXRefRole(),
+        'variable': CMakeXRefRole(),
+        'module': CMakeXRefRole(),
+        'policy': CMakeXRefRole(),
         'prop_cache': CMakeXRefRole(),
-        'prop_dir':   CMakeXRefRole(),
-        'prop_gbl':   CMakeXRefRole(),
-        'prop_inst':  CMakeXRefRole(),
-        'prop_sf':    CMakeXRefRole(),
-        'prop_test':  CMakeXRefRole(),
-        'prop_tgt':   CMakeXRefRole(),
-        'manual':     CMakeXRefRole(),
+        'prop_dir': CMakeXRefRole(),
+        'prop_gbl': CMakeXRefRole(),
+        'prop_inst': CMakeXRefRole(),
+        'prop_sf': CMakeXRefRole(),
+        'prop_test': CMakeXRefRole(),
+        'prop_tgt': CMakeXRefRole(),
+        'manual': CMakeXRefRole(),
     }
     initial_data = {
         'objects': {},  # fullname -> ObjectEntry
@@ -738,7 +736,6 @@ class CMakeDomain(Domain):
     def get_objects(self):
         for refname, obj in self.data['objects'].items():
             yield (refname, refname, obj.objtype, obj.docname, obj.node_id, 1)
-
 
 def setup(app):
     app.add_directive('cmake-module', CMakeModule)
