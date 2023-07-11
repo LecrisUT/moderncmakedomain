@@ -25,6 +25,7 @@ if sphinx.version_info >= (2,):
     from sphinx.util import logging, ws_re
     from sphinx.util.docutils import ReferenceRole
     from sphinx.util.nodes import make_refnode
+    from sphinx.locale import _
 else:
     # Sphinx 2.x is required.
     assert sphinx.version_info >= (2,)
@@ -630,23 +631,23 @@ class CMakeDomain(Domain):
     name = 'cmake'
     label = 'CMake'
     object_types = {
-        'command': ObjType('command', 'command'),
-        'cpack_gen': ObjType('cpack_gen', 'cpack_gen'),
-        'envvar': ObjType('envvar', 'envvar'),
-        'generator': ObjType('generator', 'generator'),
-        'genex': ObjType('genex', 'genex'),
-        'guide': ObjType('guide', 'guide'),
-        'variable': ObjType('variable', 'variable'),
-        'module': ObjType('module', 'module'),
-        'policy': ObjType('policy', 'policy'),
-        'prop_cache': ObjType('prop_cache', 'prop_cache'),
-        'prop_dir': ObjType('prop_dir', 'prop_dir'),
-        'prop_gbl': ObjType('prop_gbl', 'prop_gbl'),
-        'prop_inst': ObjType('prop_inst', 'prop_inst'),
-        'prop_sf': ObjType('prop_sf', 'prop_sf'),
-        'prop_test': ObjType('prop_test', 'prop_test'),
-        'prop_tgt': ObjType('prop_tgt', 'prop_tgt'),
-        'manual': ObjType('manual', 'manual'),
+        'command': ObjType(_('command'), 'command'),
+        'cpack_gen': ObjType(_('CPack generator'), 'cpack_gen'),
+        'envvar': ObjType(_('environment variable'), 'envvar'),
+        'generator': ObjType(_('generator'), 'generator'),
+        'genex': ObjType(_('generator expression'), 'genex'),
+        'guide': ObjType(_('guide'), 'guide'),
+        'variable': ObjType(_('variable'), 'variable'),
+        'module': ObjType(_('module'), 'module'),
+        'policy': ObjType(_('policy'), 'policy'),
+        'prop_cache': ObjType(_('cache property'), 'property', 'prop_cache'),
+        'prop_dir': ObjType(_('directory property'), 'property', 'prop_dir'),
+        'prop_gbl': ObjType(_('global property'), 'property', 'prop_gbl'),
+        'prop_inst': ObjType(_('installed file property'), 'property', 'prop_inst'),
+        'prop_sf': ObjType(_('source file property'), 'property', 'prop_sf'),
+        'prop_test': ObjType(_('test property'), 'property', 'prop_test'),
+        'prop_tgt': ObjType(_('target property'), 'property', 'prop_tgt'),
+        'manual': ObjType(_('manual'), 'manual'),
     }
     directives = {
         'command': CMakeObject,
@@ -667,6 +668,7 @@ class CMakeDomain(Domain):
         'variable': CMakeXRefRole(),
         'module': CMakeXRefRole(),
         'policy': CMakeXRefRole(),
+        'property': CMakeXRefRole(),
         'prop_cache': CMakeXRefRole(),
         'prop_dir': CMakeXRefRole(),
         'prop_gbl': CMakeXRefRole(),
