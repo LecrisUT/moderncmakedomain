@@ -14,8 +14,7 @@ import sphinx
 if sphinx.version_info >= (2,):
     from docutils import io, nodes
     from docutils.nodes import Element, Node, TextElement, system_message
-    from docutils.parsers.rst import Directive, directives
-    from docutils.transforms import Transform
+    from docutils.parsers.rst import directives
     from docutils.utils.code_analyzer import Lexer, LexerError
 
     from sphinx import addnodes
@@ -23,7 +22,8 @@ if sphinx.version_info >= (2,):
     from sphinx.domains import Domain, ObjType
     from sphinx.roles import XRefRole
     from sphinx.util import logging, ws_re
-    from sphinx.util.docutils import ReferenceRole
+    from sphinx.util.docutils import ReferenceRole, SphinxDirective
+    from sphinx.transforms import SphinxTransform
     from sphinx.util.nodes import make_refnode
     from sphinx.locale import _
 else:
@@ -129,7 +129,7 @@ class ObjectEntry:
     name: str
 
 
-class CMakeModule(Directive):
+class CMakeModule(SphinxDirective):
     required_arguments = 1
     optional_arguments = 0
     final_argument_whitespace = True
@@ -137,15 +137,14 @@ class CMakeModule(Directive):
 
     def __init__(self, *args, **keys):
         self.re_start = re.compile(r'^#\[(?P<eq>=*)\[\.rst:$')
-        Directive.__init__(self, *args, **keys)
+        super().__init__(*args, **keys)
 
     def run(self):
         settings = self.state.document.settings
         if not settings.file_insertion_enabled:
             raise self.warning(f'{self.name!r} directive disabled.')
 
-        env = self.state.document.settings.env
-        rel_path, path = env.relfn2path(self.arguments[0])
+        rel_path, path = self.env.relfn2path(self.arguments[0])
         path = os.path.normpath(path)
         encoding = self.options.get('encoding', settings.input_encoding)
         e_handler = settings.input_encoding_error_handler
@@ -228,13 +227,13 @@ _cmake_index_objs = {
 }
 
 
-class CMakeTransform(Transform):
+class CMakeTransform(SphinxTransform):
     # Run this transform early since we insert nodes we want
     # treated as if they were written in the documents.
     default_priority = 210
 
     def __init__(self, document, startnode):
-        Transform.__init__(self, document, startnode)
+        super().__init__(document, startnode)
         self.titles = {}
 
     def parse_title(self, docname):
@@ -244,10 +243,9 @@ class CMakeTransform(Transform):
            Return the title or False if the document file does not exist.
         """
         settings = self.document.settings
-        env = settings.env
         title = self.titles.get(docname)
         if title is None:
-            fname = os.path.join(env.srcdir, docname + '.rst')
+            fname = os.path.join(self.env.srcdir, docname + '.rst')
             try:
                 f = open(fname, 'r', encoding=settings.input_encoding)
             except IOError:
@@ -265,13 +263,11 @@ class CMakeTransform(Transform):
         return title
 
     def apply(self):
-        env = self.document.settings.env
-
         # Treat some documents as cmake domain objects.
-        objtype, sep, tail = env.docname.partition('/')
+        objtype, sep, tail = self.env.docname.partition('/')
         make_index_entry = _cmake_index_objs.get(objtype)
         if make_index_entry:
-            title = self.parse_title(env.docname)
+            title = self.parse_title(self.env.docname)
             # Insert the object link target.
             if objtype == 'command':
                 targetname = title.lower()
@@ -293,7 +289,7 @@ class CMakeTransform(Transform):
             self.document.insert(0, indexnode)
 
             # Add to cmake domain object inventory
-            domain = cast(CMakeDomain, env.get_domain('cmake'))
+            domain = cast(CMakeDomain, self.env.get_domain('cmake'))
             domain.note_object(objtype, targetname, targetid, targetid)
 
 
@@ -575,7 +571,7 @@ class CMakeXRefRole(CMakeReferenceRole[XRefRole]):
     #     pass
 
 
-class CMakeXRefTransform(Transform):
+class CMakeXRefTransform(SphinxTransform):
     # Run this transform early since we insert nodes we want
     # treated as if they were written in the documents, but
     # after the sphinx (210) and docutils (220) substitutions.
@@ -593,8 +589,6 @@ class CMakeXRefTransform(Transform):
         return self.document.traverse(condition)
 
     def apply(self):
-        env = self.document.settings.env
-
         # Find CMake cross-reference nodes and add index and target
         # nodes for them.
         for ref in self._document_findall_as_list(addnodes.pending_xref):
@@ -615,7 +609,7 @@ class CMakeXRefTransform(Transform):
                 # Index signature references to their parent command.
                 objname = objname.split('(')[0].lower()
 
-            targetnum = env.new_serialno(f'index-{objtype}:{objname}')
+            targetnum = self.env.new_serialno(f'index-{objtype}:{objname}')
 
             targetid = f'index-{targetnum}-{objtype}:{objname}'
             targetnode = nodes.target('', '', ids=[targetid])
