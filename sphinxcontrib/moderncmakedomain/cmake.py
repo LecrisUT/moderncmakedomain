@@ -655,6 +655,7 @@ class CMakeDomain(Domain):
         'genex': CMakeGenexObject,
         'signature': CMakeSignatureObject,
         'variable': CMakeObject,
+        'module': CMakeModule,
         # Other `object_types` cannot be created except by the `CMakeTransform`
     }
     roles = {
